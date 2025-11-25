@@ -18,10 +18,9 @@
     <!-- Main Dashboard Container -->
     <main class="dashboard-container">
 
-        <!-- Map Section (60% width) -->
+        <!-- Map Section (65% width) -->
         <section class="map-section" aria-label="Mapa do Brasil com cidades ativas">
             <div class="map-header">
-                <h1 class="dashboard-title">Dashboard Institucional</h1>
                 <div class="last-update">
                     <span class="update-label">Última atualização:</span>
                     <time id="lastUpdate" datetime="">--:--:--</time>
@@ -39,14 +38,13 @@
             </div>
         </section>
 
-        <!-- Metrics Sidebar (40% width) -->
+        <!-- Metrics Sidebar (35% width) -->
         <aside class="metrics-sidebar" aria-label="Métricas em tempo real">
 
             <!-- Primary Metrics Cards -->
             <div class="metrics-grid">
 
                 <article class="metric-card metric-primary">
-                    <div class="metric-icon">📊</div>
                     <div class="metric-content">
                         <h2 class="metric-label">Campanhas do Mês</h2>
                         <p class="metric-value" id="campanhasDoMes" data-count="0">
@@ -56,7 +54,6 @@
                 </article>
 
                 <article class="metric-card metric-primary">
-                    <div class="metric-icon">📻</div>
                     <div class="metric-content">
                         <h2 class="metric-label">Campanhas Ativas Hoje</h2>
                         <p class="metric-value" id="campanhasAtivasHoje" data-count="0">
@@ -66,7 +63,6 @@
                 </article>
 
                 <article class="metric-card metric-highlight">
-                    <div class="metric-icon">📡</div>
                     <div class="metric-content">
                         <h2 class="metric-label">Emissoras Ativas</h2>
                         <p class="metric-value" id="emissorasAtivasHoje" data-count="0">
@@ -76,7 +72,6 @@
                 </article>
 
                 <article class="metric-card metric-highlight">
-                    <div class="metric-icon">🎯</div>
                     <div class="metric-content">
                         <h2 class="metric-label">Inserções Hoje</h2>
                         <p class="metric-value" id="insercoesHoje" data-count="0">
@@ -86,7 +81,6 @@
                 </article>
 
                 <article class="metric-card metric-secondary">
-                    <div class="metric-icon">🏙️</div>
                     <div class="metric-content">
                         <h2 class="metric-label">Cidades Ativas</h2>
                         <p class="metric-value" id="cidadesAtivasHoje" data-count="0">
@@ -99,10 +93,7 @@
 
             <!-- Active Cities List -->
             <section class="cities-list-section">
-                <h2 class="section-title">
-                    <span class="title-icon">📍</span>
-                    Cidades Ativas
-                </h2>
+                <h2 class="section-title">Cidades Ativas</h2>
                 <div class="cities-list" id="citiesList" aria-live="polite">
                     <div class="list-loading">Carregando cidades...</div>
                 </div>
