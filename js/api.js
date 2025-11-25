@@ -63,6 +63,18 @@ const DashboardAPI = (function() {
         ]
     };
 
+    // Fallback campaigns data
+    const FALLBACK_CAMPAIGNS = [
+        { name: "Campanha Verão 2025", client: "Coca-Cola", startDate: "2025-01-15", endDate: "2025-03-15" },
+        { name: "Promoção Janeiro", client: "Ambev", startDate: "2025-01-01", endDate: "2025-01-31" },
+        { name: "Festival de Música", client: "Spotify", startDate: "2025-02-01", endDate: "2025-02-28" },
+        { name: "Campanha Carnaval", client: "Itaú", startDate: "2025-02-20", endDate: "2025-03-05" },
+        { name: "Black Friday Antecipada", client: "Magazine Luiza", startDate: "2025-01-10", endDate: "2025-02-10" },
+        { name: "Lançamento Produto X", client: "Samsung", startDate: "2025-01-05", endDate: "2025-02-05" },
+        { name: "Campanha Sustentabilidade", client: "Natura", startDate: "2025-01-20", endDate: "2025-04-20" },
+        { name: "Promoção Volta às Aulas", client: "Kalunga", startDate: "2025-01-25", endDate: "2025-02-25" }
+    ];
+
     // Cache storage
     let cache = {
         data: null,
@@ -288,11 +300,42 @@ const DashboardAPI = (function() {
         }
     }
 
+    /**
+     * Fetches campaigns data from API
+     * @returns {Promise<Array>} Array of campaign objects
+     */
+    async function fetchCampaigns() {
+        try {
+            console.log('Fetching campaigns from API...');
+            const data = await fetchWithRetry(`${CONFIG.API_BASE_URL}/campaigns`);
+            
+            // Sort by startDate (most recent first)
+            if (Array.isArray(data)) {
+                data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+            }
+            
+            console.log('✅ Campaigns fetched successfully:', data.length);
+            return data;
+            
+        } catch (error) {
+            console.error('❌ Failed to fetch campaigns:', error);
+            
+            // Use fallback data if enabled
+            if (CONFIG.USE_FALLBACK_DATA) {
+                console.warn('⚠️ Using fallback campaigns data');
+                return [...FALLBACK_CAMPAIGNS].sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+            }
+            
+            throw error;
+        }
+    }
+
     // Public API
     return {
         fetchDashboardData,
         fetchMetrics,
         fetchCoordinates,
+        fetchCampaigns,
         clearCache,
         getCacheStatus,
         updateConfig,

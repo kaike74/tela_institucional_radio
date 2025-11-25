@@ -88,8 +88,8 @@ const Dashboard = (function() {
             // Update metrics
             MetricsManager.updateAllMetrics(data.metricas);
 
-            // Update cities list
-            MetricsManager.updateCitiesList(data.coordenadas);
+            // Load campaigns
+            await MetricsManager.refreshCampaigns();
 
             // Update map pings
             MapManager.updatePings(data.coordenadas);
@@ -113,7 +113,7 @@ const Dashboard = (function() {
     }
 
     /**
-     * Refreshes all data (metrics, cities, pings)
+     * Refreshes all data (metrics, campaigns, pings)
      */
     async function refreshAll() {
         try {
@@ -123,6 +123,9 @@ const Dashboard = (function() {
 
             // Update pings with new coordinates
             MapManager.updatePings(data.coordenadas);
+
+            // Refresh campaigns
+            await MetricsManager.refreshCampaigns();
 
             lastSuccessfulUpdate = Date.now();
             consecutiveFailures = 0;
@@ -252,12 +255,7 @@ const Dashboard = (function() {
         MapManager.handleResize();
 
         // Refresh pings to reposition them
-        const coordinates = MetricsManager.getCurrentCities()
-            .map(city => ({ cidade: city.cidade, lat: 0, lng: 0 }));
-
-        if (coordinates.length > 0) {
-            refreshPings();
-        }
+        refreshPings();
     }
 
     /**
@@ -331,7 +329,7 @@ const Dashboard = (function() {
         console.log('Map loaded:', MapManager.isLoaded);
         console.log('Pings count:', MapManager.getPingsCount());
         console.log('Current metrics:', MetricsManager.getCurrentMetrics());
-        console.log('Current cities:', MetricsManager.getCurrentCities());
+        console.log('Current campaigns:', MetricsManager.getCurrentCampaigns());
         console.log('API cache status:', DashboardAPI.getCacheStatus());
         console.groupEnd();
     }
@@ -371,6 +369,7 @@ const Dashboard = (function() {
             uptime: lastSuccessfulUpdate ? Date.now() - lastSuccessfulUpdate : 0,
             pingsCount: MapManager.getPingsCount(),
             metrics: MetricsManager.getCurrentMetrics(),
+            campaigns: MetricsManager.getCurrentCampaigns(),
         };
     }
 

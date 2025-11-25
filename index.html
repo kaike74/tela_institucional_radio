@@ -41,61 +41,41 @@
         <!-- Metrics Sidebar (35% width) -->
         <aside class="metrics-sidebar" aria-label="Métricas em tempo real">
 
-            <!-- Primary Metrics Cards -->
-            <div class="metrics-grid">
-
-                <article class="metric-card metric-primary">
+            <!-- 3 BLOCOS SUPERIORES (conforme prompt original) -->
+            <div class="metrics-top-row">
+                <article class="metric-card">
                     <div class="metric-content">
-                        <h2 class="metric-label">Campanhas do Mês</h2>
+                        <h2 class="metric-label">Campanhas esse mês</h2>
                         <p class="metric-value" id="campanhasDoMes" data-count="0">
                             <span class="number">0</span>
                         </p>
                     </div>
                 </article>
 
-                <article class="metric-card metric-primary">
+                <article class="metric-card">
                     <div class="metric-content">
-                        <h2 class="metric-label">Campanhas Ativas Hoje</h2>
-                        <p class="metric-value" id="campanhasAtivasHoje" data-count="0">
-                            <span class="number">0</span>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="metric-card metric-highlight">
-                    <div class="metric-content">
-                        <h2 class="metric-label">Emissoras Ativas</h2>
+                        <h2 class="metric-label">Emissoras ativas</h2>
                         <p class="metric-value" id="emissorasAtivasHoje" data-count="0">
                             <span class="number">0</span>
                         </p>
                     </div>
                 </article>
 
-                <article class="metric-card metric-highlight">
+                <article class="metric-card">
                     <div class="metric-content">
-                        <h2 class="metric-label">Inserções Hoje</h2>
+                        <h2 class="metric-label">Inserções hoje</h2>
                         <p class="metric-value" id="insercoesHoje" data-count="0">
                             <span class="number">0</span>
                         </p>
                     </div>
                 </article>
-
-                <article class="metric-card metric-secondary">
-                    <div class="metric-content">
-                        <h2 class="metric-label">Cidades Ativas</h2>
-                        <p class="metric-value" id="cidadesAtivasHoje" data-count="0">
-                            <span class="number">0</span>
-                        </p>
-                    </div>
-                </article>
-
             </div>
 
-            <!-- Active Cities List -->
-            <section class="cities-list-section">
-                <h2 class="section-title">Cidades Ativas</h2>
-                <div class="cities-list" id="citiesList" aria-live="polite">
-                    <div class="list-loading">Carregando cidades...</div>
+            <!-- LISTA INFERIOR: CAMPANHAS ATIVAS (NÃO CIDADES) -->
+            <section class="campaigns-section">
+                <h2 class="section-title">Campanhas Ativas</h2>
+                <div class="campaigns-list" id="campaignsList">
+                    <div class="list-loading">Carregando campanhas...</div>
                 </div>
             </section>
 

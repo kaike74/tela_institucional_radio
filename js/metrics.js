@@ -9,11 +9,9 @@ const MetricsManager = (function() {
     // DOM Element References
     const elements = {
         campanhasDoMes: null,
-        campanhasAtivasHoje: null,
         emissorasAtivasHoje: null,
         insercoesHoje: null,
-        cidadesAtivasHoje: null,
-        citiesList: null,
+        campaignsList: null,
         lastUpdate: null,
         statusIndicator: null,
         statusDot: null,
@@ -22,7 +20,7 @@ const MetricsManager = (function() {
 
     // Current state
     let currentMetrics = {};
-    let currentCities = [];
+    let currentCampaigns = [];
 
     /**
      * Initializes the metrics module
@@ -30,11 +28,9 @@ const MetricsManager = (function() {
     function init() {
         // Get DOM references
         elements.campanhasDoMes = document.getElementById('campanhasDoMes');
-        elements.campanhasAtivasHoje = document.getElementById('campanhasAtivasHoje');
         elements.emissorasAtivasHoje = document.getElementById('emissorasAtivasHoje');
         elements.insercoesHoje = document.getElementById('insercoesHoje');
-        elements.cidadesAtivasHoje = document.getElementById('cidadesAtivasHoje');
-        elements.citiesList = document.getElementById('citiesList');
+        elements.campaignsList = document.getElementById('campaignsList');
         elements.lastUpdate = document.getElementById('lastUpdate');
         elements.statusIndicator = document.getElementById('statusIndicator');
         elements.statusDot = elements.statusIndicator?.querySelector('.status-dot');
@@ -119,92 +115,52 @@ const MetricsManager = (function() {
         // Store current metrics
         currentMetrics = { ...metrics };
 
-        // Update each metric
+        // Update each metric (only the 3 we display)
         updateMetric('campanhasDoMes', metrics.campanhasDoMes || 0);
-        updateMetric('campanhasAtivasHoje', metrics.campanhasAtivasHoje || 0);
         updateMetric('emissorasAtivasHoje', metrics.emissorasAtivasHoje || 0);
         updateMetric('insercoesHoje', metrics.insercoesHoje || 0);
-        updateMetric('cidadesAtivasHoje', metrics.cidadesAtivasHoje || 0);
 
         console.log('Metrics updated:', metrics);
     }
 
     /**
-     * Groups coordinates by city and counts occurrences
-     * @param {Array} coordinates - Array of coordinate objects
-     * @returns {Array} Sorted array of {cidade, count}
+     * Updates campaigns list from API
+     * @param {Array} campaigns - Array of campaign objects
      */
-    function groupCitiesByCount(coordinates) {
-        const cityMap = new Map();
+    function updateCampaignsList(campaigns) {
+        if (!elements.campaignsList) return;
 
-        coordinates.forEach(coord => {
-            const cidade = coord.cidade || 'Desconhecida';
-            cityMap.set(cidade, (cityMap.get(cidade) || 0) + 1);
-        });
-
-        // Convert to array and sort by count (descending)
-        return Array.from(cityMap.entries())
-            .map(([cidade, count]) => ({ cidade, count }))
-            .sort((a, b) => b.count - a.count);
-    }
-
-    /**
-     * Renders cities list with animation
-     * @param {Array} cities - Array of {cidade, count}
-     */
-    function renderCitiesList(cities) {
-        if (!elements.citiesList) return;
-
-        // Store current cities
-        currentCities = cities;
+        // Store current campaigns
+        currentCampaigns = campaigns || [];
 
         // Clear list
-        elements.citiesList.innerHTML = '';
+        elements.campaignsList.innerHTML = '';
 
         // Check if empty
-        if (!cities || cities.length === 0) {
-            elements.citiesList.innerHTML = '<div class="list-loading">Nenhuma cidade ativa</div>';
+        if (!campaigns || campaigns.length === 0) {
+            elements.campaignsList.innerHTML = '<div class="list-loading">Nenhuma campanha ativa</div>';
             return;
         }
 
-        // Create city items
+        // Create campaign items (limit to 10)
         const fragment = document.createDocumentFragment();
 
-        cities.forEach((city, index) => {
-            const cityItem = document.createElement('div');
-            cityItem.className = 'city-item';
-            cityItem.style.setProperty('--item-index', index);
+        campaigns.slice(0, 10).forEach((campaign, index) => {
+            const item = document.createElement('div');
+            item.className = 'campaign-item';
+            item.style.setProperty('--item-index', index);
 
-            const cityName = document.createElement('span');
-            cityName.className = 'city-name';
-            cityName.textContent = city.cidade;
+            const startDate = new Date(campaign.startDate).toLocaleDateString('pt-BR');
+            const endDate = new Date(campaign.endDate).toLocaleDateString('pt-BR');
 
-            const cityCount = document.createElement('span');
-            cityCount.className = 'city-count';
-            cityCount.textContent = city.count > 1 ? `${city.count}x` : '';
+            item.textContent = `${campaign.name}, ${campaign.client} - ${startDate} a ${endDate}`;
 
-            cityItem.appendChild(cityName);
-            cityItem.appendChild(cityCount);
-            fragment.appendChild(cityItem);
+            fragment.appendChild(item);
         });
 
-        elements.citiesList.appendChild(fragment);
+        elements.campaignsList.appendChild(fragment);
 
-        console.log(`Rendered ${cities.length} cities`);
-    }
-
-    /**
-     * Updates cities list from coordinates
-     * @param {Array} coordinates - Array of coordinate objects
-     */
-    function updateCitiesList(coordinates) {
-        if (!Array.isArray(coordinates)) {
-            console.error('Invalid coordinates array');
-            return;
-        }
-
-        const cities = groupCitiesByCount(coordinates);
-        renderCitiesList(cities);
+        console.log(`Rendered ${Math.min(campaigns.length, 10)} campaigns`);
     }
 
     /**
@@ -245,7 +201,7 @@ const MetricsManager = (function() {
     }
 
     /**
-     * Refreshes all metrics and cities from API
+     * Refreshes all metrics and campaigns from API
      * @returns {Promise<void>}
      */
     async function refresh() {
@@ -256,9 +212,6 @@ const MetricsManager = (function() {
 
             // Update metrics
             updateAllMetrics(data.metricas);
-
-            // Update cities list
-            updateCitiesList(data.coordenadas);
 
             // Update timestamp
             updateTimestamp();
@@ -276,6 +229,19 @@ const MetricsManager = (function() {
     }
 
     /**
+     * Refreshes campaigns list
+     * @returns {Promise<void>}
+     */
+    async function refreshCampaigns() {
+        try {
+            const campaigns = await DashboardAPI.fetchCampaigns();
+            updateCampaignsList(campaigns);
+        } catch (error) {
+            console.error('Failed to refresh campaigns:', error);
+        }
+    }
+
+    /**
      * Gets current metrics
      * @returns {Object} Current metrics
      */
@@ -284,11 +250,11 @@ const MetricsManager = (function() {
     }
 
     /**
-     * Gets current cities
-     * @returns {Array} Current cities
+     * Gets current campaigns
+     * @returns {Array} Current campaigns
      */
-    function getCurrentCities() {
-        return [...currentCities];
+    function getCurrentCampaigns() {
+        return [...currentCampaigns];
     }
 
     // Public API
@@ -296,12 +262,13 @@ const MetricsManager = (function() {
         init,
         updateMetric,
         updateAllMetrics,
-        updateCitiesList,
+        updateCampaignsList,
         updateTimestamp,
         updateStatus,
         refresh,
+        refreshCampaigns,
         getCurrentMetrics,
-        getCurrentCities,
+        getCurrentCampaigns,
     };
 })();
 
