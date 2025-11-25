@@ -304,6 +304,12 @@ const MetricsManager = (function () {
 
             const data = await DashboardAPI.fetchDashboardData(true);
 
+            // Fallback: Se insercoesHoje for 0 mas tivermos recentes, usar o tamanho da lista
+            if ((!data.metricas.insercoesHoje || data.metricas.insercoesHoje === 0) && data.insercoesRecentes && data.insercoesRecentes.length > 0) {
+                console.log('Usando fallback para insercoesHoje');
+                data.metricas.insercoesHoje = data.insercoesRecentes.length;
+            }
+
             // Update metrics
             updateAllMetrics(data.metricas);
 
@@ -367,7 +373,10 @@ const MetricsManager = (function () {
         // Mostrar primeiras 15 inserções
         const maxVisible = 15;
         const visibleInsertions = insertions.slice(0, maxVisible);
-        const remainingCount = insertions.length - maxVisible;
+
+        // Calculate remaining based on total count if available, otherwise use list length
+        const totalCount = (currentMetrics && currentMetrics.insercoesHoje) ? currentMetrics.insercoesHoje : insertions.length;
+        const remainingCount = Math.max(0, totalCount - visibleInsertions.length);
 
         visibleInsertions.forEach(insertion => {
             const item = document.createElement('div');

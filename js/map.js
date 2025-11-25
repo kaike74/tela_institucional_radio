@@ -102,6 +102,10 @@ const MapManager = (function () {
 
             tileLayer.on('load', () => {
                 console.log('✅ Tiles carregados com sucesso!');
+                // Forçar redimensionamento do mapa para garantir renderização
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
             });
 
             tileLayer.on('tileerror', (error) => {
