@@ -21,6 +21,10 @@ npm-debug.log*
 *.tmp
 *.temp
 
-# Build files (if using build tools in the future)
+# Build files
 dist/
 build/
+.wrangler/
+
+# Node modules (if added in future)
+node_modules/
