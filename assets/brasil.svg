@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 1200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+        <!-- Sombra suave -->
+        <filter id="shadow">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+            <feOffset dx="0" dy="2" result="offsetblur"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.15"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- Background transparente -->
+    <rect width="1000" height="1200" fill="transparent"/>
+
+    <!-- Mapa do Brasil - Design Limpo -->
+    <g id="brazil-map-clean" filter="url(#shadow)">
+        <!-- Contorno principal do Brasil -->
+        <path id="brazil-outline"
+              d="M 450,50
+                 C 470,45 490,43 510,50
+                 L 540,65 L 570,85 L 595,110 L 615,140
+                 C 630,165 640,190 648,215
+                 L 660,250 L 670,285 L 680,320 L 687,355
+                 C 690,380 692,405 693,430
+                 L 693,460 L 690,495 L 685,530 L 678,565
+                 C 672,595 665,625 655,655
+                 L 645,690 L 632,725 L 617,760 L 600,795
+                 C 585,825 568,855 548,885
+                 L 525,920 L 500,950 L 473,978
+                 C 450,1000 425,1020 398,1035
+                 L 370,1050 L 340,1060 L 310,1063
+                 C 285,1063 260,1058 238,1048
+                 L 215,1035 L 193,1018 L 173,998
+                 C 158,980 144,960 132,938
+                 L 122,915 L 115,890 L 110,865
+                 C 107,840 105,815 105,790
+                 L 105,760 L 108,730 L 113,700
+                 C 117,675 123,650 130,625
+                 L 140,595 L 152,565 L 167,537
+                 C 180,512 195,488 212,465
+                 L 230,442 L 250,420 L 272,400
+                 C 292,382 313,366 335,352
+                 L 360,338 L 385,327 L 410,318
+                 C 430,312 450,308 468,303
+                 L 485,295 L 500,284 L 513,270
+                 C 523,258 531,244 537,229
+                 L 542,210 L 545,190 L 546,170
+                 C 546,150 544,130 540,112
+                 L 533,95 L 524,80 L 513,68
+                 C 502,57 489,48 475,42
+                 L 450,50 Z"
+              fill="#f8f9fa"
+              stroke="#6c757d"
+              stroke-width="2"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              opacity="1" />
+
+        <!-- Linhas regionais sutis -->
+        <g id="regional-lines" opacity="0.3">
+            <!-- Norte-Nordeste -->
+            <line x1="150" y1="220" x2="650" y2="240" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+
+            <!-- Nordeste-Centro-Oeste -->
+            <line x1="180" y1="380" x2="670" y2="380" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+
+            <!-- Centro-Oeste-Sudeste -->
+            <line x1="160" y1="580" x2="660" y2="580" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+
+            <!-- Sudeste-Sul -->
+            <line x1="180" y1="770" x2="620" y2="770" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+
+            <!-- Verticais -->
+            <line x1="350" y1="80" x2="340" y2="1020" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+            <line x1="500" y1="70" x2="490" y2="930" stroke="#adb5bd" stroke-width="1" stroke-dasharray="5,5"/>
+        </g>
+
+        <!-- Pontos de referência regionais -->
+        <g id="regional-markers" opacity="0.6">
+            <!-- Norte -->
+            <circle cx="400" cy="150" r="3" fill="#6c757d"/>
+            <text x="400" y="170" fill="#6c757d" font-size="14" font-family="sans-serif" font-weight="600" text-anchor="middle" opacity="0.7">Norte</text>
+
+            <!-- Nordeste -->
+            <circle cx="620" cy="300" r="3" fill="#6c757d"/>
+            <text x="620" y="320" fill="#6c757d" font-size="14" font-family="sans-serif" font-weight="600" text-anchor="middle" opacity="0.7">Nordeste</text>
+
+            <!-- Centro-Oeste -->
+            <circle cx="360" cy="480" r="3" fill="#6c757d"/>
+            <text x="360" y="500" fill="#6c757d" font-size="14" font-family="sans-serif" font-weight="600" text-anchor="middle" opacity="0.7">Centro-Oeste</text>
+
+            <!-- Sudeste -->
+            <circle cx="470" cy="760" r="3" fill="#6c757d"/>
+            <text x="470" y="780" fill="#6c757d" font-size="14" font-family="sans-serif" font-weight="600" text-anchor="middle" opacity="0.7">Sudeste</text>
+
+            <!-- Sul -->
+            <circle cx="350" cy="980" r="3" fill="#6c757d"/>
+            <text x="350" y="1000" fill="#6c757d" font-size="14" font-family="sans-serif" font-weight="600" text-anchor="middle" opacity="0.7">Sul</text>
+        </g>
+    </g>
+
+    <!-- Grid decorativo minimalista -->
+    <g id="coordinate-grid" opacity="0.08">
+        <!-- Linhas de latitude -->
+        <line x1="80" y1="150" x2="720" y2="150" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="80" y1="300" x2="720" y2="300" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="80" y1="450" x2="720" y2="450" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="80" y1="600" x2="720" y2="600" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="80" y1="750" x2="720" y2="750" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="80" y1="900" x2="720" y2="900" stroke="#6c757d" stroke-width="0.5"/>
+
+        <!-- Linhas de longitude -->
+        <line x1="200" y1="40" x2="200" y2="1080" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="300" y1="70" x2="300" y2="1060" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="400" y1="50" x2="400" y2="1070" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="500" y1="65" x2="500" y2="1000" stroke="#6c757d" stroke-width="0.5"/>
+        <line x1="600" y1="110" x2="600" y2="840" stroke="#6c757d" stroke-width="0.5"/>
+    </g>
+
+    <!-- Label BRASIL minimalista -->
+    <text x="400" y="560"
+          text-anchor="middle"
+          fill="#dee2e6"
+          font-size="72"
+          font-weight="700"
+          font-family="sans-serif"
+          opacity="0.25"
+          letter-spacing="10">
+        BRASIL
+    </text>
+</svg>

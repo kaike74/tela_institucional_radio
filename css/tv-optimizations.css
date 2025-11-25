@@ -1,0 +1,325 @@
+/* ============================================
+   TV-SPECIFIC OPTIMIZATIONS
+   Target: TV Browsers, Chrome WebView, Smart TVs
+   ============================================ */
+
+/* Hardware Acceleration for TV Rendering */
+* {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Disable Text Selection (TV navigation) */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent Scrollbar from causing reflows */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Force GPU Acceleration on Animations */
+.ping,
+.ping-dot,
+.ping-wave,
+.metric-card,
+.city-item,
+.map-container {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+}
+
+/* Optimize Font Rendering for TV Screens */
+body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: always;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* High Contrast for Better Visibility */
+@media (prefers-contrast: high) {
+    :root {
+        --color-bg-primary: #000000;
+        --color-bg-secondary: #0a0a0a;
+        --color-text-primary: #ffffff;
+        --color-accent-primary: #00ffff;
+    }
+}
+
+/* Prevent Image Dragging (TV Remotes) */
+img,
+svg {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+}
+
+/* Optimize SVG Rendering */
+svg {
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    image-rendering: optimizeQuality;
+}
+
+/* Prevent Layout Shift on Dynamic Content */
+.metric-value .number {
+    display: inline-block;
+    min-width: 3ch;
+    text-align: right;
+}
+
+/* Memory-Efficient Shadows for TV */
+@media (max-width: 1920px) {
+    :root {
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Reduce Motion for Low-End TV Boxes */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+    }
+
+    .ping-wave {
+        display: none;
+    }
+
+    .metric-card:hover {
+        transform: none;
+    }
+}
+
+/* Optimize for WebView (TV Box Apps) */
+@supports (-webkit-touch-callout: none) {
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Prevent Flickering on Repaints */
+.dashboard-container,
+.map-section,
+.metrics-sidebar {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: auto;
+}
+
+/* Optimize Animation Performance */
+@media (min-width: 1920px) {
+    .ping-wave {
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .metric-card {
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+/* Force Layer Compositing for Smooth Animations */
+.pings-container,
+.metrics-grid,
+.cities-list {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Prevent Text Rendering Issues on TV */
+.metric-value,
+.city-name,
+.dashboard-title {
+    font-feature-settings: 'tnum' on, 'lnum' on;
+    -webkit-font-feature-settings: 'tnum' on, 'lnum' on;
+    font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Optimize Scrolling Performance */
+.metrics-sidebar,
+.cities-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Prevent Overscroll Effects (TV Browsers) */
+body {
+    overscroll-behavior: none;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+/* Focus Styles for TV Remote Navigation */
+.metric-card:focus,
+.city-item:focus {
+    outline: 3px solid var(--color-accent-primary);
+    outline-offset: 4px;
+}
+
+/* Hide Scrollbar on TV (Cleaner Look) */
+.metrics-sidebar::-webkit-scrollbar,
+.cities-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.metrics-sidebar::-webkit-scrollbar-thumb,
+.cities-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.3);
+    border-radius: 3px;
+}
+
+/* Optimize for 4K Displays */
+@media (min-width: 3840px) {
+    :root {
+        --font-size-base: 32px;
+        --font-size-small: 28px;
+        --font-size-large: 48px;
+        --font-size-xl: 64px;
+        --font-size-xxl: 96px;
+    }
+
+    .ping-dot {
+        width: 24px;
+        height: 24px;
+    }
+
+    .status-dot {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Low Power Mode Optimization */
+@media (prefers-reduced-data: reduce) {
+    .ping-wave {
+        display: none;
+    }
+
+    .metric-card::after {
+        display: none;
+    }
+}
+
+/* Prevent Memory Leaks on Long-Running Displays */
+.metric-value[data-count]::before {
+    content: '';
+    display: none;
+}
+
+/* Force Redraw Optimization */
+@keyframes forceRedraw {
+    from {
+        opacity: 0.99;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Smooth Gradient Rendering */
+body {
+    background-attachment: fixed;
+}
+
+/* Optimize for Android TV WebView */
+@media screen and (max-device-width: 1920px) {
+    body {
+        -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.1);
+    }
+
+    .metric-value {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Prevent Subpixel Rendering Issues */
+* {
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.metric-card,
+.city-item,
+.map-container {
+    transform-style: preserve-3d;
+}
+
+/* Cache SVG for Better Performance */
+#mapContainer svg {
+    pointer-events: none;
+}
+
+/* Optimize Paint Performance */
+.dashboard-container * {
+    contain: layout style paint;
+}
+
+/* Critical Animations Only */
+@media (prefers-reduced-motion: no-preference) {
+    .ping-dot,
+    .status-dot {
+        animation-fill-mode: both;
+        animation-iteration-count: infinite;
+    }
+}
+
+/* Disable Hover Effects on Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+    .metric-card:hover {
+        transform: none;
+        background: var(--color-bg-card);
+    }
+
+    .city-item:hover {
+        transform: none;
+        background: var(--color-bg-secondary);
+    }
+}
+
+/* Screen Burn-In Prevention */
+@media (display-mode: fullscreen) {
+    .dashboard-title,
+    .metric-icon {
+        animation: preventBurnIn 600s linear infinite;
+    }
+}
+
+@keyframes preventBurnIn {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.98;
+    }
+}
+
+/* TV-Safe Area (Overscan Protection) */
+@supports (padding: env(safe-area-inset-top)) {
+    .dashboard-container {
+        padding-top: max(var(--spacing-md), env(safe-area-inset-top));
+        padding-right: max(var(--spacing-md), env(safe-area-inset-right));
+        padding-bottom: max(var(--spacing-md), env(safe-area-inset-bottom));
+        padding-left: max(var(--spacing-md), env(safe-area-inset-left));
+    }
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard Institucional - Rádio</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/tv-optimizations.css">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="assets/brasil.svg" as="image">
+</head>
+<body>
+    <!-- Main Dashboard Container -->
+    <main class="dashboard-container">
+
+        <!-- Map Section (65% width) -->
+        <section class="map-section" aria-label="Mapa do Brasil com cidades ativas">
+            <div class="map-header">
+                <div class="last-update">
+                    <span class="update-label">Última atualização:</span>
+                    <time id="lastUpdate" datetime="">--:--:--</time>
+                </div>
+            </div>
+
+            <div class="map-container" id="mapContainer">
+                <!-- SVG Map will be loaded here -->
+                <div class="map-loading">Carregando mapa...</div>
+            </div>
+
+            <!-- Active Cities Overlay -->
+            <div class="pings-container" id="pingsContainer" aria-live="polite">
+                <!-- Animated pings will be added dynamically -->
+            </div>
+        </section>
+
+        <!-- Metrics Sidebar (35% width) -->
+        <aside class="metrics-sidebar" aria-label="Métricas em tempo real">
+
+            <!-- Primary Metrics Cards -->
+            <div class="metrics-grid">
+
+                <article class="metric-card metric-primary">
+                    <div class="metric-content">
+                        <h2 class="metric-label">Campanhas do Mês</h2>
+                        <p class="metric-value" id="campanhasDoMes" data-count="0">
+                            <span class="number">0</span>
+                        </p>
+                    </div>
+                </article>
+
+                <article class="metric-card metric-primary">
+                    <div class="metric-content">
+                        <h2 class="metric-label">Campanhas Ativas Hoje</h2>
+                        <p class="metric-value" id="campanhasAtivasHoje" data-count="0">
+                            <span class="number">0</span>
+                        </p>
+                    </div>
+                </article>
+
+                <article class="metric-card metric-highlight">
+                    <div class="metric-content">
+                        <h2 class="metric-label">Emissoras Ativas</h2>
+                        <p class="metric-value" id="emissorasAtivasHoje" data-count="0">
+                            <span class="number">0</span>
+                        </p>
+                    </div>
+                </article>
+
+                <article class="metric-card metric-highlight">
+                    <div class="metric-content">
+                        <h2 class="metric-label">Inserções Hoje</h2>
+                        <p class="metric-value" id="insercoesHoje" data-count="0">
+                            <span class="number">0</span>
+                        </p>
+                    </div>
+                </article>
+
+                <article class="metric-card metric-secondary">
+                    <div class="metric-content">
+                        <h2 class="metric-label">Cidades Ativas</h2>
+                        <p class="metric-value" id="cidadesAtivasHoje" data-count="0">
+                            <span class="number">0</span>
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Active Cities List -->
+            <section class="cities-list-section">
+                <h2 class="section-title">Cidades Ativas</h2>
+                <div class="cities-list" id="citiesList" aria-live="polite">
+                    <div class="list-loading">Carregando cidades...</div>
+                </div>
+            </section>
+
+            <!-- Status Indicator -->
+            <div class="status-indicator" id="statusIndicator">
+                <div class="status-dot status-loading"></div>
+                <span class="status-text">Conectando...</span>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- Error Toast (hidden by default) -->
+    <div class="error-toast" id="errorToast" role="alert" aria-live="assertive">
+        <span class="error-icon">⚠️</span>
+        <span class="error-message"></span>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/api.js"></script>
+    <script src="js/metrics.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
