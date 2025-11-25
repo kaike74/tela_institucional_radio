@@ -265,42 +265,6 @@ const MetricsManager = (function () {
 
     /**
      * Updates campaigns list display
-     * @param {Array} campaigns - Array of campaign objects
-     */
-    function updateCampaignsList(campaigns) {
-        const campaignsList = document.getElementById('campaignsList');
-        if (!campaignsList) return;
-
-        campaignsList.innerHTML = '';
-
-        if (!campaigns || campaigns.length === 0) {
-            campaignsList.innerHTML = '<div class="list-loading">Nenhuma campanha ativa</div>';
-            return;
-        }
-
-        // Show only first 10 campaigns
-        campaigns.slice(0, 10).forEach(campaign => {
-            const item = document.createElement('div');
-            item.className = 'campaign-item';
-
-            const startDate = new Date(campaign.startDate).toLocaleDateString('pt-BR');
-            const endDate = new Date(campaign.endDate).toLocaleDateString('pt-BR');
-
-            item.textContent = `${campaign.name}, ${campaign.client} - ${startDate} a ${endDate}`;
-
-            campaignsList.appendChild(item);
-        });
-
-        console.log(`Rendered ${Math.min(campaigns.length, 10)} campaigns`);
-    }
-
-    /**
-     * Refreshes all metrics and cities from API
-     * @returns {Promise<void>}
-     */
-    async function refresh() {
-        try {
-            updateStatus('loading', 'Atualizando...');
 
             const data = await DashboardAPI.fetchDashboardData(true);
 
@@ -341,12 +305,70 @@ const MetricsManager = (function () {
         return [...currentCities];
     }
 
+    /**
+     * Updates insertions list display
+     * @param {Array} insertions - Array of insertion objects
+     */
+    function updateInsertionsList(insertions) {
+        const insertionsList = document.getElementById('insertionsList');
+        const insertionsOverflow = document.getElementById('insertionsOverflow');
+
+        if (!insertionsList) return;
+
+        insertionsList.innerHTML = '';
+
+        if (!insertions || insertions.length === 0) {
+            insertionsList.innerHTML = '<div class="list-loading">Nenhuma inserção recente</div>';
+            if (insertionsOverflow) insertionsOverflow.style.display = 'none';
+            return;
+        }
+
+        // Mostrar primeiras 15 inserções
+        const maxVisible = 15;
+        const visibleInsertions = insertions.slice(0, maxVisible);
+        const remainingCount = insertions.length - maxVisible;
+
+        visibleInsertions.forEach(insertion => {
+            const item = document.createElement('div');
+            item.className = 'insertion-item';
+
+            const station = document.createElement('div');
+            station.className = 'insertion-station';
+            station.textContent = insertion.stationName || 'Emissora desconhecida';
+
+            const client = document.createElement('div');
+            client.className = 'insertion-client';
+            client.textContent = insertion.client || 'Cliente desconhecido';
+
+            const time = document.createElement('div');
+            time.className = 'insertion-time';
+            time.textContent = insertion.hour || '--:--';
+
+            item.appendChild(station);
+            item.appendChild(client);
+            item.appendChild(time);
+
+            insertionsList.appendChild(item);
+        });
+
+        // Mostrar contador de overflow
+        if (insertionsOverflow && remainingCount > 0) {
+            insertionsOverflow.textContent = `+${remainingCount} registros ainda hoje`;
+            insertionsOverflow.style.display = 'block';
+        } else if (insertionsOverflow) {
+            insertionsOverflow.style.display = 'none';
+        }
+
+        console.log(`Rendered ${visibleInsertions.length} insertions (${remainingCount} remaining)`);
+    }
+
     // Public API
     return {
         init,
         updateMetric,
         updateAllMetrics,
         updateCitiesList,
+        updateInsertionsList,
         updateCampaignsList,
         fetchCampaigns,
         updateTimestamp,

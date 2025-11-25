@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1920, initial-scale=1.0">
@@ -14,6 +15,7 @@
     <!-- Preload critical resources -->
     <link rel="preload" href="assets/brasil.svg" as="image">
 </head>
+
 <body>
     <!-- Main Dashboard Container -->
     <main class="dashboard-container">
@@ -91,11 +93,14 @@
 
             </div>
 
-            <!-- Active Cities List -->
-            <section class="cities-list-section">
-                <h2 class="section-title">Cidades Ativas</h2>
-                <div class="cities-list" id="citiesList" aria-live="polite">
-                    <div class="list-loading">Carregando cidades...</div>
+            <!-- Inserções Recentes -->
+            <section class="insertions-section">
+                <h2 class="section-title">Inserções Recentes</h2>
+                <div class="insertions-list" id="insertionsList" aria-live="polite">
+                    <div class="list-loading">Carregando inserções...</div>
+                </div>
+                <div class="insertions-overflow" id="insertionsOverflow" style="display: none;">
+                    <!-- Dinâmico via JS -->
                 </div>
             </section>
 
@@ -121,4 +126,5 @@
     <script src="js/map.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
+
 </html>

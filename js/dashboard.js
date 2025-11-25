@@ -3,7 +3,7 @@
  * Orchestrates all modules and handles refresh cycles
  */
 
-const Dashboard = (function() {
+const Dashboard = (function () {
     'use strict';
 
     // Refresh intervals (in milliseconds)
@@ -90,6 +90,11 @@ const Dashboard = (function() {
 
             // Update cities list
             MetricsManager.updateCitiesList(data.coordenadas);
+
+            // Update insertions list
+            if (data.insercoesRecentes) {
+                MetricsManager.updateInsertionsList(data.insercoesRecentes);
+            }
 
             // Update map pings
             MapManager.updatePings(data.coordenadas);

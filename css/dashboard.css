@@ -293,11 +293,13 @@ body {
     min-width: 2ch;
 }
 
-/* Cities Section - Grid Fixo 2x sem Scroll */
-.cities-list-section {
+/* Inserções Recentes Section */
+.insertions-section {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    flex: 1;
+    overflow: hidden;
 }
 
 .section-title {
@@ -310,6 +312,61 @@ body {
 
 .title-icon {
     display: none;
+}
+
+.insertions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 8px;
+}
+
+.insertion-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+    background: var(--color-bg-secondary);
+    border-left: 3px solid var(--color-accent-primary);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+}
+
+.insertion-station {
+    font-weight: 700;
+    color: var(--color-text-primary);
+    font-size: 14px;
+}
+
+.insertion-client {
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+.insertion-time {
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.insertions-overflow {
+    padding: 8px 12px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+/* Cities Section - Manter para compatibilidade */
+.cities-list-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .cities-list {
