@@ -63,7 +63,7 @@ const DashboardAPI = (function() {
         ]
     };
 
-    // Fallback campaigns data
+    // Fallback campaigns data (test data for demonstration when API is unavailable)
     const FALLBACK_CAMPAIGNS = [
         { name: "Campanha Verão 2025", client: "Coca-Cola", startDate: "2025-01-15", endDate: "2025-03-15" },
         { name: "Promoção Janeiro", client: "Ambev", startDate: "2025-01-01", endDate: "2025-01-31" },

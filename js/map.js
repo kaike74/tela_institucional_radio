@@ -121,8 +121,6 @@ const MapManager = (function() {
             maxZoom: 18,
         }).addTo(leafletMap);
 
-        // Store reference
-        window.brazilMap = leafletMap;
         mapLoaded = true;
 
         console.log('OpenStreetMap loaded successfully');
@@ -154,6 +152,7 @@ const MapManager = (function() {
      * Updates map dimensions for coordinate conversion
      */
     function updateMapDimensions() {
+        if (!elements.pingsContainer) return;
         const rect = elements.pingsContainer.getBoundingClientRect();
         mapDimensions = {
             width: rect.width,
@@ -177,19 +176,6 @@ const MapManager = (function() {
         const y = normalizedY * mapDimensions.height;
 
         return { x, y };
-    }
-
-    /**
-     * Creates a custom ping icon for Leaflet markers
-     * @returns {L.DivIcon} Custom Leaflet DivIcon
-     */
-    function createPingIcon() {
-        return L.divIcon({
-            className: 'leaflet-ping-marker',
-            html: '<div class="ping-dot"></div>',
-            iconSize: [12, 12],
-            iconAnchor: [6, 6],
-        });
     }
 
     /**
