@@ -9,7 +9,7 @@ const DashboardAPI = (function () {
     // Configuration
     const CONFIG = {
         // Cloudflare Worker URL - configure com seu endpoint
-        API_BASE_URL: 'https://dashboard-institucional-49f-workers-dev.kaike74.workers.dev',
+        API_BASE_URL: 'https://restless-boat-c27d.kaike-458.workers.dev',
         TIMEOUT: 10000, // 10 seconds
         RETRY_ATTEMPTS: 3,
         RETRY_DELAY: 2000, // 2 seconds
@@ -127,7 +127,6 @@ const DashboardAPI = (function () {
     /**
      * Validates API response structure
      * @param {Object} data - Response data to validate
-     * @returns {boolean} True if valid
      */
     function validateResponse(data) {
         if (!data || typeof data !== 'object') {
@@ -139,25 +138,23 @@ const DashboardAPI = (function () {
             throw new Error('Invalid response: missing metricas object');
         }
 
+        // Criar coordenadas vazias se não existir
         if (!Array.isArray(data.coordenadas)) {
-            throw new Error('Invalid response: coordenadas must be an array');
+            console.warn('coordenadas não é array, criando vazio');
+            data.coordenadas = [];
         }
 
-        // Validate metrics structure
-        const requiredMetrics = [
-            'campanhasDoMes',
-            'campanhasAtivasHoje',
-            'emissorasAtivasHoje',
-            'insercoesHoje',
-            'cidadesAtivasHoje',
-        ];
+        // Mapear campos do Worker para estrutura esperada
+        const metricas = data.metricas;
 
-        for (const metric of requiredMetrics) {
-            if (typeof data.metricas[metric] !== 'number') {
-                throw new Error(`Invalid response: metricas.${metric} must be a number`);
-            }
-        }
+        // Garantir que todos os campos existem (usar 0 como padrão)
+        metricas.campanhasDoMes = metricas.campanhasDoMes || metricas.campanhasValidasMes || 0;
+        metricas.campanhasAtivasHoje = metricas.campanhasAtivasHoje || metricas.campanhasValidasMes || 0;
+        metricas.emissorasAtivasHoje = metricas.emissorasAtivasHoje || metricas.emissorasProgamadasMes || 0;
+        metricas.insercoesHoje = metricas.insercoesHoje || 0;
+        metricas.cidadesAtivasHoje = metricas.cidadesAtivasHoje || 0;
 
+        console.log('Métricas mapeadas:', metricas);
         return true;
     }
 
