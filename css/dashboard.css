@@ -12,23 +12,40 @@
 }
 
 :root {
-    /* DESIGN LIMPO - Fundo Branco para PC */
-    --color-bg-primary: #ffffff;
-    --color-bg-secondary: #f8f9fa;
+    /* FUNDO CLARO MAS COM ACENTOS E-MÍDIAS */
+    --color-bg-primary: #f8f9fa;
+    /* Fundo principal claro */
     --color-bg-card: #ffffff;
+    /* Cards brancos */
+    --color-bg-secondary: #e9ecef;
+    /* Fundo secundário */
     --color-bg-card-hover: #f8f9fa;
 
+    /* TEXTOS */
     --color-text-primary: #212529;
     --color-text-secondary: #6c757d;
     --color-text-muted: #adb5bd;
 
-    /* Acentos Minimalistas */
-    --color-accent-primary: #0d6efd;      /* Azul limpo */
-    --color-accent-secondary: #6f42c1;    /* Roxo suave */
-    --color-accent-tertiary: #0dcaf0;     /* Ciano */
-    --color-accent-success: #198754;      /* Verde limpo */
-    --color-accent-warning: #fd7e14;      /* Laranja limpo */
-    --color-accent-error: #dc3545;        /* Vermelho limpo */
+    /* CORES E-MÍDIAS (acentos coloridos) */
+    --color-accent-primary: #fc1e75;
+    /* Rosa E-MÍDIAS */
+    --color-accent-secondary: #d946ef;
+    /* Magenta E-MÍDIAS */
+    --color-accent-blue: #00d4ff;
+    /* Azul E-MÍDIAS */
+    --color-accent-success: #10b981;
+    /* Verde */
+    --color-accent-warning: #f59e0b;
+    /* Laranja */
+    --color-accent-error: #dc3545;
+    /* Vermelho */
+
+    /* BORDAS COLORIDAS PARA OS CARDS */
+    --border-primary: 3px solid var(--color-accent-primary);
+    --border-secondary: 3px solid var(--color-accent-secondary);
+    --border-blue: 3px solid var(--color-accent-blue);
+    --border-success: 3px solid var(--color-accent-success);
+    --border-warning: 3px solid var(--color-accent-warning);
 
     /* Bordas e Sombras Suaves */
     --border-color: #dee2e6;
@@ -196,27 +213,44 @@ body {
     gap: 16px;
 }
 
-/* Metric Cards - Design Limpo e Estático */
+/* Metric Cards - CORES E-MÍDIAS COM BORDAS COLORIDAS */
 .metric-card {
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 16px;
-    background: var(--color-bg-secondary);
+    background: var(--color-bg-card);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-sm);
 }
 
+/* CARDS COM BORDAS COLORIDAS E-MÍDIAS */
+.metric-card:nth-child(1) {
+    border-left: var(--border-primary);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(252, 30, 117, 0.05) 100%);
+}
+
+.metric-card:nth-child(2) {
+    border-left: var(--border-secondary);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(217, 70, 239, 0.05) 100%);
+}
+
+.metric-card:nth-child(3) {
+    border-left: var(--border-blue);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(0, 212, 255, 0.05) 100%);
+}
+
+/* Manter classes antigas para compatibilidade */
 .metric-card.metric-highlight {
-    border-left: 4px solid var(--color-accent-primary);
+    border-left: var(--border-primary);
 }
 
 .metric-card.metric-primary {
-    border-left: 4px solid var(--color-accent-secondary);
+    border-left: var(--border-secondary);
 }
 
 .metric-card.metric-secondary {
-    border-left: 4px solid var(--color-accent-success);
+    border-left: var(--border-success);
 }
 
 .metric-icon {
@@ -238,9 +272,9 @@ body {
 }
 
 .metric-value {
-    font-size: 36px;
+    font-size: 48px;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: var(--color-accent-primary);
     font-variant-numeric: tabular-nums;
     line-height: 1;
 }
@@ -371,9 +405,12 @@ body {
 
 /* Animations */
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.5;
     }
@@ -384,6 +421,7 @@ body {
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;

@@ -3,7 +3,7 @@
  * Handles Brazil SVG map rendering and animated pings
  */
 
-const MapManager = (function() {
+const MapManager = (function () {
     'use strict';
 
     // DOM Element References
@@ -47,7 +47,7 @@ const MapManager = (function() {
     }
 
     /**
-     * Loads SVG map from file or creates inline fallback
+     * Loads OpenStreetMap using Leaflet.js
      * @returns {Promise<void>}
      */
     async function loadMap() {
@@ -57,42 +57,68 @@ const MapManager = (function() {
         }
 
         try {
-            // Try to load external SVG
-            const response = await fetch(config.svgPath);
+            // Load Leaflet CSS
+            const leafletCSS = document.createElement('link');
+            leafletCSS.rel = 'stylesheet';
+            leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+            document.head.appendChild(leafletCSS);
 
-            if (response.ok) {
-                const svgText = await response.text();
-                elements.mapContainer.innerHTML = svgText;
+            // Load Leaflet JS
+            await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
 
-                // Get SVG element
-                const svgElement = elements.mapContainer.querySelector('svg');
-                if (svgElement) {
-                    // Set viewBox and preserve aspect ratio
-                    if (!svgElement.hasAttribute('viewBox')) {
-                        svgElement.setAttribute('viewBox', '0 0 1000 1000');
-                    }
-                    svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-                    svgElement.style.width = '100%';
-                    svgElement.style.height = '100%';
+            // Clear container and set ID for Leaflet
+            elements.mapContainer.innerHTML = '';
+            elements.mapContainer.id = 'leaflet-map';
+            elements.mapContainer.style.width = '100%';
+            elements.mapContainer.style.height = '100%';
 
-                    mapLoaded = true;
-                    updateMapDimensions();
-                    console.log('SVG map loaded successfully');
-                    return;
-                }
-            }
+            // Create Leaflet map centered on Brazil
+            const map = L.map('leaflet-map', {
+                center: [-14.235, -51.925], // Center of Brazil
+                zoom: 4,
+                zoomControl: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                dragging: false,
+                touchZoom: false
+            });
 
-            throw new Error('Failed to load SVG map');
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '',
+                maxZoom: 18,
+                minZoom: 3
+            }).addTo(map);
+
+            // Save map reference
+            window.brazilMap = map;
+            mapLoaded = true;
+            updateMapDimensions();
+
+            console.log('OpenStreetMap loaded successfully');
 
         } catch (error) {
-            console.warn('Could not load external SVG:', error.message);
-
-            if (config.fallbackToInline) {
-                createInlineMap();
-            } else {
-                throw error;
-            }
+            console.error('Failed to load OpenStreetMap:', error);
+            // Fallback to inline map
+            createInlineMap();
         }
+    }
+
+    /**
+     * Helper function to load external scripts
+     * @param {string} src - Script URL
+     * @returns {Promise<void>}
+     */
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
     }
 
     /**
@@ -210,20 +236,17 @@ const MapManager = (function() {
     }
 
     /**
-     * Updates pings based on coordinates
+     * Updates pings based on coordinates using Leaflet markers
      * @param {Array} coordinates - Array of coordinate objects
      */
     function updatePings(coordinates) {
-        if (!elements.pingsContainer) {
-            console.warn('Pings container not available');
+        if (!window.brazilMap) {
+            console.warn('Map not available yet');
             return;
         }
 
         // Clear existing pings
         clearPings();
-
-        // Update map dimensions in case window was resized
-        updateMapDimensions();
 
         // Check if we have coordinates
         if (!coordinates || coordinates.length === 0) {
@@ -231,10 +254,15 @@ const MapManager = (function() {
             return;
         }
 
-        // Create document fragment for better performance
-        const fragment = document.createDocumentFragment();
+        // Create custom icon for pings
+        const pingIcon = L.divIcon({
+            className: 'leaflet-ping-icon',
+            html: '<div class="ping-dot-leaflet"></div>',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+        });
 
-        // Create ping for each coordinate
+        // Create markers for each coordinate
         coordinates.forEach((coord, index) => {
             // Validate coordinate
             if (typeof coord.lat !== 'number' || typeof coord.lng !== 'number') {
@@ -253,14 +281,15 @@ const MapManager = (function() {
                 return;
             }
 
-            const ping = createPing(coord, index);
-            fragment.appendChild(ping);
+            // Create marker
+            const marker = L.marker([coord.lat, coord.lng], {
+                icon: pingIcon,
+                title: coord.cidade
+            }).addTo(window.brazilMap);
+
+            // Store marker
+            currentPings.push(marker);
         });
-
-        elements.pingsContainer.appendChild(fragment);
-
-        // Store current pings
-        currentPings = Array.from(elements.pingsContainer.children);
 
         console.log(`Created ${currentPings.length} pings`);
     }
@@ -269,8 +298,10 @@ const MapManager = (function() {
      * Clears all pings from the map
      */
     function clearPings() {
-        if (elements.pingsContainer) {
-            elements.pingsContainer.innerHTML = '';
+        if (window.brazilMap && currentPings.length > 0) {
+            currentPings.forEach(marker => {
+                window.brazilMap.removeLayer(marker);
+            });
         }
         currentPings = [];
     }

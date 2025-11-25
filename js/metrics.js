@@ -3,7 +3,7 @@
  * Handles real-time metric updates and animations
  */
 
-const MetricsManager = (function() {
+const MetricsManager = (function () {
     'use strict';
 
     // DOM Element References
@@ -245,6 +245,56 @@ const MetricsManager = (function() {
     }
 
     /**
+     * Fetches campaigns from API
+     * @returns {Promise<Array>} Array of campaigns
+     */
+    async function fetchCampaigns() {
+        try {
+            const campaigns = await DashboardAPI.fetchCampaigns();
+
+            // Sort by startDate (most recent first)
+            campaigns.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+
+            return campaigns;
+
+        } catch (error) {
+            console.error('Erro ao buscar campanhas:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Updates campaigns list display
+     * @param {Array} campaigns - Array of campaign objects
+     */
+    function updateCampaignsList(campaigns) {
+        const campaignsList = document.getElementById('campaignsList');
+        if (!campaignsList) return;
+
+        campaignsList.innerHTML = '';
+
+        if (!campaigns || campaigns.length === 0) {
+            campaignsList.innerHTML = '<div class="list-loading">Nenhuma campanha ativa</div>';
+            return;
+        }
+
+        // Show only first 10 campaigns
+        campaigns.slice(0, 10).forEach(campaign => {
+            const item = document.createElement('div');
+            item.className = 'campaign-item';
+
+            const startDate = new Date(campaign.startDate).toLocaleDateString('pt-BR');
+            const endDate = new Date(campaign.endDate).toLocaleDateString('pt-BR');
+
+            item.textContent = `${campaign.name}, ${campaign.client} - ${startDate} a ${endDate}`;
+
+            campaignsList.appendChild(item);
+        });
+
+        console.log(`Rendered ${Math.min(campaigns.length, 10)} campaigns`);
+    }
+
+    /**
      * Refreshes all metrics and cities from API
      * @returns {Promise<void>}
      */
@@ -297,6 +347,8 @@ const MetricsManager = (function() {
         updateMetric,
         updateAllMetrics,
         updateCitiesList,
+        updateCampaignsList,
+        fetchCampaigns,
         updateTimestamp,
         updateStatus,
         refresh,

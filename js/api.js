@@ -3,7 +3,7 @@
  * Handles all HTTP requests and data fetching
  */
 
-const DashboardAPI = (function() {
+const DashboardAPI = (function () {
     'use strict';
 
     // Configuration
@@ -288,11 +288,35 @@ const DashboardAPI = (function() {
         }
     }
 
+    /**
+     * Fetches campaigns from API
+     * @returns {Promise<Array>} Array of campaigns
+     */
+    async function fetchCampaigns() {
+        try {
+            const url = `${CONFIG.API_BASE_URL}/campaigns`;
+            const campaigns = await fetchWithRetry(url);
+
+            if (!Array.isArray(campaigns)) {
+                throw new Error('Invalid campaigns response: not an array');
+            }
+
+            console.log(`✅ Fetched ${campaigns.length} campaigns`);
+            return campaigns;
+
+        } catch (error) {
+            console.error('❌ Failed to fetch campaigns:', error);
+            // Return empty array on error
+            return [];
+        }
+    }
+
     // Public API
     return {
         fetchDashboardData,
         fetchMetrics,
         fetchCoordinates,
+        fetchCampaigns,
         clearCache,
         getCacheStatus,
         updateConfig,
