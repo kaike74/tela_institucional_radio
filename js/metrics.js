@@ -52,7 +52,12 @@ const MetricsManager = (function () {
     function animateNumber(element, newValue, duration = 800) {
         if (!element) return;
 
-        const numberSpan = element.querySelector('.number');
+        let numberSpan = element.querySelector('.number');
+        // Se não encontrar filho .number, verifica se o próprio elemento é o .number
+        if (!numberSpan && element.classList.contains('number')) {
+            numberSpan = element;
+        }
+
         if (!numberSpan) return;
 
         const oldValue = parseInt(element.getAttribute('data-count') || '0', 10);

@@ -99,8 +99,9 @@ body {
     background: #ffffff;
     border-radius: var(--radius-sm);
     overflow: hidden;
-    min-height: 0;
-    /* Permite flex shrink */
+    min-height: 600px;
+    /* Altura mínima garantida */
+    height: 100%;
 }
 
 /* Leaflet Map */
