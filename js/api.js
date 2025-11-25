@@ -9,7 +9,7 @@ const DashboardAPI = (function () {
     // Configuration
     const CONFIG = {
         // Cloudflare Worker URL - configure com seu endpoint
-        API_BASE_URL: 'https://restless-boat-c27d.kaike-458.workers.dev',
+        API_BASE_URL: 'https://dashboard-institucional.kaike-458.workers.dev',
         TIMEOUT: 30000, // 30 seconds (Worker demora para processar)
         RETRY_ATTEMPTS: 3,
         RETRY_DELAY: 2000, // 2 seconds
