@@ -88,11 +88,27 @@ const MapManager = (function () {
             });
 
             // Add OpenStreetMap tiles
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '',
                 maxZoom: 18,
-                minZoom: 3
-            }).addTo(map);
+                minZoom: 3,
+                errorTileUrl: '', // Evitar tiles quebrados
+                crossOrigin: true
+            });
+
+            tileLayer.on('loading', () => {
+                console.log('Tiles começando a carregar...');
+            });
+
+            tileLayer.on('load', () => {
+                console.log('✅ Tiles carregados com sucesso!');
+            });
+
+            tileLayer.on('tileerror', (error) => {
+                console.error('❌ Erro ao carregar tile:', error);
+            });
+
+            tileLayer.addTo(map);
 
             // Save map reference
             window.brazilMap = map;
@@ -100,6 +116,8 @@ const MapManager = (function () {
             updateMapDimensions();
 
             console.log('OpenStreetMap loaded successfully');
+            console.log('Map center:', map.getCenter());
+            console.log('Map zoom:', map.getZoom());
 
         } catch (error) {
             console.error('Failed to load OpenStreetMap:', error);
