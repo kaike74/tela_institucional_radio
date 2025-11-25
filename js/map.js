@@ -57,14 +57,16 @@ const MapManager = (function () {
         }
 
         try {
-            // Load Leaflet CSS
-            const leafletCSS = document.createElement('link');
-            leafletCSS.rel = 'stylesheet';
-            leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-            document.head.appendChild(leafletCSS);
+            // Load Leaflet CSS first and wait for it
+            await loadCSS('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+            console.log('Leaflet CSS loaded');
 
-            // Load Leaflet JS
+            // Load Leaflet JS and wait for it
             await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
+            console.log('Leaflet JS loaded');
+
+            // Wait a bit for Leaflet to fully initialize
+            await new Promise(resolve => setTimeout(resolve, 200));
 
             // Clear container and set ID for Leaflet
             elements.mapContainer.innerHTML = '';
@@ -115,9 +117,37 @@ const MapManager = (function () {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = src;
-            script.onload = resolve;
-            script.onerror = reject;
+            script.onload = () => {
+                console.log(`Script loaded: ${src}`);
+                resolve();
+            };
+            script.onerror = (error) => {
+                console.error(`Failed to load script: ${src}`, error);
+                reject(error);
+            };
             document.head.appendChild(script);
+        });
+    }
+
+    /**
+     * Helper function to load external CSS
+     * @param {string} href - CSS URL
+     * @returns {Promise<void>}
+     */
+    function loadCSS(href) {
+        return new Promise((resolve, reject) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+            link.onload = () => {
+                console.log(`CSS loaded: ${href}`);
+                resolve();
+            };
+            link.onerror = (error) => {
+                console.error(`Failed to load CSS: ${href}`, error);
+                reject(error);
+            };
+            document.head.appendChild(link);
         });
     }
 
