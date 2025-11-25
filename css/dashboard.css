@@ -166,7 +166,7 @@ body {
 .map-container {
     flex: 1;
     position: relative;
-    background: #e9ecef;
+    background: #ffffff;
     border: 1px solid var(--border-light);
     border-radius: var(--radius-sm);
     overflow: hidden;
@@ -182,6 +182,20 @@ body {
     height: 100% !important;
     min-height: 700px !important;
     z-index: 1;
+    background: #ffffff !important;
+}
+
+/* Forçar tiles do Leaflet a aparecerem */
+.leaflet-container {
+    background: #ffffff !important;
+}
+
+.leaflet-tile-pane {
+    opacity: 1 !important;
+}
+
+.leaflet-tile {
+    opacity: 1 !important;
 }
 
 .map-loading {
@@ -230,132 +244,29 @@ body {
     padding: 16px;
     background: var(--color-bg-card);
     border: 1px solid var(--border-light);
-    border-radius: var(--radius-sm);
-}
 
-/* CARDS COM BORDAS COLORIDAS E-MÍDIAS */
-.metric-card:nth-child(1) {
-    border-left: var(--border-primary);
-    background: linear-gradient(135deg, #ffffff 0%, rgba(252, 30, 117, 0.05) 100%);
-}
+    .metric-value .number {
+        display: inline-block;
+        min-width: 2ch;
+    }
 
-.metric-card:nth-child(2) {
-    border-left: var(--border-secondary);
-    background: linear-gradient(135deg, #ffffff 0%, rgba(217, 70, 239, 0.05) 100%);
-}
+    /* Inserções Recentes Section */
+    .insertions-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+        overflow: hidden;
+    }
 
-.metric-card:nth-child(3) {
-    border-left: var(--border-blue);
-    background: linear-gradient(135deg, #ffffff 0%, rgba(0, 212, 255, 0.05) 100%);
-}
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border-light);
+    }
 
-/* Manter classes antigas para compatibilidade */
-.metric-card.metric-highlight {
-    border-left: var(--border-primary);
-}
-
-.metric-card.metric-primary {
-    border-left: var(--border-secondary);
-}
-
-.metric-card.metric-secondary {
-    border-left: var(--border-success);
-}
-
-.metric-icon {
-    display: none;
-}
-
-.metric-content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.metric-label {
-    font-size: 14px;
-    color: var(--color-text-muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.metric-value {
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--color-accent-primary);
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-}
-
-.metric-value .number {
-    display: inline-block;
-    min-width: 2ch;
-}
-
-/* Inserções Recentes Section */
-.insertions-section {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex: 1;
-    overflow: hidden;
-}
-
-.section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-light);
-}
-
-.title-icon {
-    display: none;
-}
-
-.insertions-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow-y: auto;
-    flex: 1;
-    padding-right: 8px;
-}
-
-.insertion-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px;
-    background: var(--color-bg-secondary);
-    border-left: 3px solid var(--color-accent-primary);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-}
-
-.insertion-station {
-    font-weight: 700;
-    color: var(--color-text-primary);
-    font-size: 14px;
-}
-
-.insertion-client {
-    color: var(--color-text-secondary);
-    font-size: 12px;
-}
-
-.insertion-time {
-    color: var(--color-accent-primary);
-    font-weight: 600;
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-}
-
-.insertions-overflow {
-    padding: 8px 12px;
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-sm);
     text-align: center;
     font-size: 12px;
     color: var(--color-text-muted);

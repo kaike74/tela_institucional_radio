@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/tv-optimizations.css">
-
-    <!-- Preload critical resources -->
-    <link rel="preload" href="assets/brasil.svg" as="image">
 </head>
 
 <body>
@@ -30,7 +27,7 @@
             </div>
 
             <div class="map-container" id="mapContainer">
-                <!-- SVG Map will be loaded here -->
+                <!-- Leaflet Map will be loaded here -->
                 <div class="map-loading">Carregando mapa...</div>
             </div>
 
@@ -43,53 +40,38 @@
         <!-- Metrics Sidebar (35% width) -->
         <aside class="metrics-sidebar" aria-label="Métricas em tempo real">
 
-            <!-- Primary Metrics Cards -->
+            <!-- 3 Métricas Principais -->
             <div class="metrics-grid">
 
-                <article class="metric-card metric-primary">
+                <!-- Campanhas do Mês -->
+                <div class="metric-card metric-highlight">
                     <div class="metric-content">
-                        <h2 class="metric-label">Campanhas do Mês</h2>
-                        <p class="metric-value" id="campanhasDoMes" data-count="0">
-                            <span class="number">0</span>
-                        </p>
+                        <div class="metric-label">Campanhas do Mês</div>
+                        <div class="metric-value">
+                            <span class="number" id="campanhasDoMes" data-count="0">0</span>
+                        </div>
                     </div>
-                </article>
+                </div>
 
-                <article class="metric-card metric-primary">
+                <!-- Emissoras Ativas -->
+                <div class="metric-card metric-secondary">
                     <div class="metric-content">
-                        <h2 class="metric-label">Campanhas Ativas Hoje</h2>
-                        <p class="metric-value" id="campanhasAtivasHoje" data-count="0">
-                            <span class="number">0</span>
-                        </p>
+                        <div class="metric-label">Emissoras Ativas</div>
+                        <div class="metric-value">
+                            <span class="number" id="emissorasAtivasHoje" data-count="0">0</span>
+                        </div>
                     </div>
-                </article>
+                </div>
 
-                <article class="metric-card metric-highlight">
+                <!-- Inserções Hoje -->
+                <div class="metric-card metric-primary">
                     <div class="metric-content">
-                        <h2 class="metric-label">Emissoras Ativas</h2>
-                        <p class="metric-value" id="emissorasAtivasHoje" data-count="0">
-                            <span class="number">0</span>
-                        </p>
+                        <div class="metric-label">Inserções Hoje</div>
+                        <div class="metric-value">
+                            <span class="number" id="insercoesHoje" data-count="0">0</span>
+                        </div>
                     </div>
-                </article>
-
-                <article class="metric-card metric-highlight">
-                    <div class="metric-content">
-                        <h2 class="metric-label">Inserções Hoje</h2>
-                        <p class="metric-value" id="insercoesHoje" data-count="0">
-                            <span class="number">0</span>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="metric-card metric-secondary">
-                    <div class="metric-content">
-                        <h2 class="metric-label">Cidades Ativas</h2>
-                        <p class="metric-value" id="cidadesAtivasHoje" data-count="0">
-                            <span class="number">0</span>
-                        </p>
-                    </div>
-                </article>
+                </div>
 
             </div>
 
@@ -113,6 +95,10 @@
         </aside>
 
     </main>
+
+    <!-- Hidden elements for compatibility -->
+    <div id="campanhasAtivasHoje" style="display:none;" data-count="0">0</div>
+    <div id="cidadesAtivasHoje" style="display:none;" data-count="0">0</div>
 
     <!-- Error Toast (hidden by default) -->
     <div class="error-toast" id="errorToast" role="alert" aria-live="assertive">
