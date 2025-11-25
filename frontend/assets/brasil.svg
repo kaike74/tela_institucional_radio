@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 1200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+        <!-- Gradient for Brazil map -->
+        <linearGradient id="brazilGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1e2746;stop-opacity:0.8" />
+            <stop offset="50%" style="stop-color:#252e54;stop-opacity:0.9" />
+            <stop offset="100%" style="stop-color:#1a2340;stop-opacity:0.8" />
+        </linearGradient>
+
+        <!-- Glow filter -->
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <!-- Drop shadow -->
+        <filter id="shadow">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+            <feOffset dx="2" dy="2" result="offsetblur"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.5"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1000" height="1200" fill="transparent"/>
+
+    <!-- Brazil outline (simplified) -->
+    <g id="brazil-map" filter="url(#shadow)">
+        <!-- Main country shape - Simplified Brazil outline -->
+        <path id="brazil-outline"
+              d="M 450,50
+                 L 480,45 L 510,50 L 540,60 L 570,75 L 600,95 L 625,120 L 645,150
+                 L 660,185 L 670,220 L 680,255 L 690,290 L 695,325 L 698,360
+                 L 700,395 L 700,430 L 698,465 L 695,500 L 690,535 L 685,570
+                 L 678,605 L 670,640 L 660,675 L 648,710 L 635,745 L 620,780
+                 L 605,815 L 588,850 L 570,885 L 550,920 L 528,955 L 505,985
+                 L 480,1010 L 455,1030 L 428,1045 L 400,1055 L 370,1060 L 340,1058
+                 L 310,1050 L 282,1038 L 255,1022 L 230,1003 L 208,980 L 188,955
+                 L 170,928 L 155,900 L 143,870 L 133,840 L 125,808 L 120,775
+                 L 118,742 L 118,708 L 120,675 L 123,642 L 128,610 L 135,578
+                 L 143,547 L 153,517 L 165,488 L 180,460 L 197,434 L 216,410
+                 L 237,388 L 260,368 L 285,350 L 312,335 L 340,322 L 370,312
+                 L 400,305 L 425,300 L 450,295 L 472,288 L 490,278 L 505,265
+                 L 518,250 L 528,233 L 535,215 L 540,195 L 543,175 L 543,155
+                 L 541,135 L 537,115 L 531,97 L 523,80 L 513,65 L 500,53
+                 L 485,44 L 468,39 L 450,38 L 450,50 Z"
+              fill="url(#brazilGradient)"
+              stroke="#00d4ff"
+              stroke-width="2.5"
+              stroke-linejoin="round"
+              opacity="0.95"
+              filter="url(#glow)" />
+
+        <!-- Regional divisions (simplified states) -->
+        <g id="state-lines" opacity="0.3">
+            <!-- Norte -->
+            <path d="M 200,200 L 600,200" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <!-- Nordeste -->
+            <path d="M 200,350 L 680,350" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <!-- Centro-Oeste -->
+            <path d="M 150,550 L 680,550" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <!-- Sudeste -->
+            <path d="M 150,750 L 640,750" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <!-- Sul -->
+            <path d="M 180,920 L 550,920" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <!-- Vertical divisions -->
+            <path d="M 350,100 L 350,1000" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+            <path d="M 500,100 L 500,900" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+        </g>
+
+        <!-- Major geographic reference points -->
+        <g id="reference-points" opacity="0.5">
+            <!-- North -->
+            <circle cx="420" cy="100" r="3" fill="#6b7a99"/>
+            <text x="440" y="105" fill="#6b7a99" font-size="14" font-family="sans-serif">Norte</text>
+
+            <!-- Northeast -->
+            <circle cx="600" cy="250" r="3" fill="#6b7a99"/>
+            <text x="620" y="255" fill="#6b7a99" font-size="14" font-family="sans-serif">Nordeste</text>
+
+            <!-- Center-West -->
+            <circle cx="380" cy="450" r="3" fill="#6b7a99"/>
+            <text x="400" y="455" fill="#6b7a99" font-size="14" font-family="sans-serif">Centro-Oeste</text>
+
+            <!-- Southeast -->
+            <circle cx="450" cy="750" r="3" fill="#6b7a99"/>
+            <text x="470" y="755" fill="#6b7a99" font-size="14" font-family="sans-serif">Sudeste</text>
+
+            <!-- South -->
+            <circle cx="350" cy="970" r="3" fill="#6b7a99"/>
+            <text x="370" y="975" fill="#6b7a99" font-size="14" font-family="sans-serif">Sul</text>
+        </g>
+    </g>
+
+    <!-- Decorative grid overlay -->
+    <g id="coordinate-grid" opacity="0.15">
+        <!-- Latitude lines -->
+        <line x1="100" y1="150" x2="700" y2="150" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="100" y1="300" x2="700" y2="300" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="100" y1="450" x2="700" y2="450" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="100" y1="600" x2="700" y2="600" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="100" y1="750" x2="700" y2="750" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="100" y1="900" x2="700" y2="900" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="100" y1="1050" x2="700" y2="1050" stroke="#00d4ff" stroke-width="0.5"/>
+
+        <!-- Longitude lines -->
+        <line x1="200" y1="30" x2="200" y2="1100" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="300" y1="80" x2="300" y2="1050" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="400" y1="50" x2="400" y2="1080" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="500" y1="70" x2="500" y2="1020" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="600" y1="100" x2="600" y2="850" stroke="#00d4ff" stroke-width="0.5"/>
+    </g>
+
+    <!-- Country label -->
+    <text x="400" y="550"
+          text-anchor="middle"
+          fill="#00d4ff"
+          font-size="64"
+          font-weight="700"
+          font-family="sans-serif"
+          opacity="0.2"
+          letter-spacing="8">
+        BRASIL
+    </text>
+</svg>
