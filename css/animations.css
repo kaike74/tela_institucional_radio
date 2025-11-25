@@ -11,12 +11,12 @@
 }
 
 .ping-dot {
-    width: 16px;
-    height: 16px;
-    background: var(--color-accent-success);
+    width: 18px;
+    height: 18px;
+    background: var(--color-accent-primary);
     border-radius: 50%;
     position: relative;
-    box-shadow: 0 0 16px rgba(0, 255, 136, 0.8);
+    box-shadow: 0 0 20px rgba(252, 30, 117, 0.9), 0 0 40px rgba(252, 30, 117, 0.5);
     animation: pingPulse 2s ease-in-out infinite;
 }
 
@@ -25,9 +25,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--color-accent-success);
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-accent-primary);
     border-radius: 50%;
     animation: pingWave 2s ease-out infinite;
     opacity: 0;

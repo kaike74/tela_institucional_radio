@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 1000 1200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <defs>
-        <!-- Gradient for Brazil map -->
-        <linearGradient id="brazilGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#1e2746;stop-opacity:0.8" />
-            <stop offset="50%" style="stop-color:#252e54;stop-opacity:0.9" />
-            <stop offset="100%" style="stop-color:#1a2340;stop-opacity:0.8" />
+        <!-- Gradient E-MÍDIAS para o mapa -->
+        <linearGradient id="brazilGradientEmidias" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#242449;stop-opacity:0.9" />
+            <stop offset="50%" style="stop-color:#2d2d5f;stop-opacity:0.95" />
+            <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:0.9" />
         </linearGradient>
 
-        <!-- Glow filter -->
-        <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <!-- Gradient rosa para bordas -->
+        <linearGradient id="borderGradientEmidias" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#fc1e75;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#d946ef;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#fc1e75;stop-opacity:1" />
+        </linearGradient>
+
+        <!-- Glow rosa/magenta -->
+        <filter id="glowEmidias">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
             <feMerge>
                 <feMergeNode in="coloredBlur"/>
                 <feMergeNode in="SourceGraphic"/>
@@ -18,11 +25,11 @@
         </filter>
 
         <!-- Drop shadow -->
-        <filter id="shadow">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-            <feOffset dx="2" dy="2" result="offsetblur"/>
+        <filter id="shadowEmidias">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+            <feOffset dx="0" dy="4" result="offsetblur"/>
             <feComponentTransfer>
-                <feFuncA type="linear" slope="0.5"/>
+                <feFuncA type="linear" slope="0.6"/>
             </feComponentTransfer>
             <feMerge>
                 <feMergeNode/>
@@ -31,110 +38,148 @@
         </filter>
     </defs>
 
-    <!-- Background -->
+    <!-- Background transparente -->
     <rect width="1000" height="1200" fill="transparent"/>
 
-    <!-- Brazil outline (simplified) -->
-    <g id="brazil-map" filter="url(#shadow)">
-        <!-- Main country shape - Simplified Brazil outline -->
-        <path id="brazil-outline"
+    <!-- Mapa do Brasil - Shape mais realista -->
+    <g id="brazil-map-emidias" filter="url(#shadowEmidias)">
+        <!-- Contorno principal do Brasil (simplificado mas mais preciso) -->
+        <path id="brazil-outline-main"
               d="M 450,50
-                 L 480,45 L 510,50 L 540,60 L 570,75 L 600,95 L 625,120 L 645,150
-                 L 660,185 L 670,220 L 680,255 L 690,290 L 695,325 L 698,360
-                 L 700,395 L 700,430 L 698,465 L 695,500 L 690,535 L 685,570
-                 L 678,605 L 670,640 L 660,675 L 648,710 L 635,745 L 620,780
-                 L 605,815 L 588,850 L 570,885 L 550,920 L 528,955 L 505,985
-                 L 480,1010 L 455,1030 L 428,1045 L 400,1055 L 370,1060 L 340,1058
-                 L 310,1050 L 282,1038 L 255,1022 L 230,1003 L 208,980 L 188,955
-                 L 170,928 L 155,900 L 143,870 L 133,840 L 125,808 L 120,775
-                 L 118,742 L 118,708 L 120,675 L 123,642 L 128,610 L 135,578
-                 L 143,547 L 153,517 L 165,488 L 180,460 L 197,434 L 216,410
-                 L 237,388 L 260,368 L 285,350 L 312,335 L 340,322 L 370,312
-                 L 400,305 L 425,300 L 450,295 L 472,288 L 490,278 L 505,265
-                 L 518,250 L 528,233 L 535,215 L 540,195 L 543,175 L 543,155
-                 L 541,135 L 537,115 L 531,97 L 523,80 L 513,65 L 500,53
-                 L 485,44 L 468,39 L 450,38 L 450,50 Z"
-              fill="url(#brazilGradient)"
-              stroke="#00d4ff"
-              stroke-width="2.5"
+                 C 470,45 490,43 510,50
+                 L 540,65 L 570,85 L 595,110 L 615,140
+                 C 630,165 640,190 648,215
+                 L 660,250 L 670,285 L 680,320 L 687,355
+                 C 690,380 692,405 693,430
+                 L 693,460 L 690,495 L 685,530 L 678,565
+                 C 672,595 665,625 655,655
+                 L 645,690 L 632,725 L 617,760 L 600,795
+                 C 585,825 568,855 548,885
+                 L 525,920 L 500,950 L 473,978
+                 C 450,1000 425,1020 398,1035
+                 L 370,1050 L 340,1060 L 310,1063
+                 C 285,1063 260,1058 238,1048
+                 L 215,1035 L 193,1018 L 173,998
+                 C 158,980 144,960 132,938
+                 L 122,915 L 115,890 L 110,865
+                 C 107,840 105,815 105,790
+                 L 105,760 L 108,730 L 113,700
+                 C 117,675 123,650 130,625
+                 L 140,595 L 152,565 L 167,537
+                 C 180,512 195,488 212,465
+                 L 230,442 L 250,420 L 272,400
+                 C 292,382 313,366 335,352
+                 L 360,338 L 385,327 L 410,318
+                 C 430,312 450,308 468,303
+                 L 485,295 L 500,284 L 513,270
+                 C 523,258 531,244 537,229
+                 L 542,210 L 545,190 L 546,170
+                 C 546,150 544,130 540,112
+                 L 533,95 L 524,80 L 513,68
+                 C 502,57 489,48 475,42
+                 L 450,50 Z"
+              fill="url(#brazilGradientEmidias)"
+              stroke="url(#borderGradientEmidias)"
+              stroke-width="3"
               stroke-linejoin="round"
+              stroke-linecap="round"
               opacity="0.95"
-              filter="url(#glow)" />
+              filter="url(#glowEmidias)" />
 
-        <!-- Regional divisions (simplified states) -->
-        <g id="state-lines" opacity="0.3">
+        <!-- Divisões regionais (linhas sutis) -->
+        <g id="regional-lines" opacity="0.25">
+            <!-- Norte-Nordeste -->
+            <path d="M 150,220 Q 400,200 650,240" stroke="#fc1e75" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+
+            <!-- Nordeste-Centro-Oeste -->
+            <path d="M 180,380 Q 400,360 670,380" stroke="#fc1e75" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+
+            <!-- Centro-Oeste-Sudeste -->
+            <path d="M 160,580 Q 380,560 660,580" stroke="#d946ef" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+
+            <!-- Sudeste-Sul -->
+            <path d="M 180,770 Q 380,750 620,770" stroke="#d946ef" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+
+            <!-- Verticais -->
+            <path d="M 350,80 L 340,1020" stroke="#00d4ff" stroke-width="1" stroke-dasharray="6,4" opacity="0.3"/>
+            <path d="M 500,70 L 490,930" stroke="#00d4ff" stroke-width="1" stroke-dasharray="6,4" opacity="0.3"/>
+        </g>
+
+        <!-- Pontos de referência regionais -->
+        <g id="regional-markers" opacity="0.6">
             <!-- Norte -->
-            <path d="M 200,200 L 600,200" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+            <circle cx="400" cy="150" r="4" fill="#fc1e75">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+            </circle>
 
             <!-- Nordeste -->
-            <path d="M 200,350 L 680,350" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+            <circle cx="620" cy="300" r="4" fill="#fc1e75">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+            </circle>
 
             <!-- Centro-Oeste -->
-            <path d="M 150,550 L 680,550" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+            <circle cx="360" cy="480" r="4" fill="#d946ef">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+            </circle>
 
             <!-- Sudeste -->
-            <path d="M 150,750 L 640,750" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+            <circle cx="470" cy="760" r="4" fill="#d946ef">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" begin="1.8s" repeatCount="indefinite"/>
+            </circle>
 
             <!-- Sul -->
-            <path d="M 180,920 L 550,920" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
-
-            <!-- Vertical divisions -->
-            <path d="M 350,100 L 350,1000" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
-            <path d="M 500,100 L 500,900" stroke="#2a3c66" stroke-width="1" stroke-dasharray="4,4"/>
+            <circle cx="350" cy="980" r="4" fill="#00d4ff">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" begin="2.4s" repeatCount="indefinite"/>
+            </circle>
         </g>
 
-        <!-- Major geographic reference points -->
-        <g id="reference-points" opacity="0.5">
-            <!-- North -->
-            <circle cx="420" cy="100" r="3" fill="#6b7a99"/>
-            <text x="440" y="105" fill="#6b7a99" font-size="14" font-family="sans-serif">Norte</text>
-
-            <!-- Northeast -->
-            <circle cx="600" cy="250" r="3" fill="#6b7a99"/>
-            <text x="620" y="255" fill="#6b7a99" font-size="14" font-family="sans-serif">Nordeste</text>
-
-            <!-- Center-West -->
-            <circle cx="380" cy="450" r="3" fill="#6b7a99"/>
-            <text x="400" y="455" fill="#6b7a99" font-size="14" font-family="sans-serif">Centro-Oeste</text>
-
-            <!-- Southeast -->
-            <circle cx="450" cy="750" r="3" fill="#6b7a99"/>
-            <text x="470" y="755" fill="#6b7a99" font-size="14" font-family="sans-serif">Sudeste</text>
-
-            <!-- South -->
-            <circle cx="350" cy="970" r="3" fill="#6b7a99"/>
-            <text x="370" y="975" fill="#6b7a99" font-size="14" font-family="sans-serif">Sul</text>
+        <!-- Labels regionais -->
+        <g id="region-labels" opacity="0.5">
+            <text x="400" y="165" fill="#fc1e75" font-size="16" font-family="sans-serif" font-weight="600" text-anchor="middle">NORTE</text>
+            <text x="620" y="315" fill="#fc1e75" font-size="16" font-family="sans-serif" font-weight="600" text-anchor="middle">NORDESTE</text>
+            <text x="360" y="495" fill="#d946ef" font-size="16" font-family="sans-serif" font-weight="600" text-anchor="middle">CENTRO-OESTE</text>
+            <text x="470" y="775" fill="#d946ef" font-size="16" font-family="sans-serif" font-weight="600" text-anchor="middle">SUDESTE</text>
+            <text x="350" y="995" fill="#00d4ff" font-size="16" font-family="sans-serif" font-weight="600" text-anchor="middle">SUL</text>
         </g>
     </g>
 
-    <!-- Decorative grid overlay -->
-    <g id="coordinate-grid" opacity="0.15">
-        <!-- Latitude lines -->
-        <line x1="100" y1="150" x2="700" y2="150" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="100" y1="300" x2="700" y2="300" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="100" y1="450" x2="700" y2="450" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="100" y1="600" x2="700" y2="600" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="100" y1="750" x2="700" y2="750" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="100" y1="900" x2="700" y2="900" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="100" y1="1050" x2="700" y2="1050" stroke="#00d4ff" stroke-width="0.5"/>
+    <!-- Grid decorativo de coordenadas -->
+    <g id="coordinate-grid-emidias" opacity="0.12">
+        <!-- Linhas de latitude -->
+        <line x1="80" y1="150" x2="720" y2="150" stroke="#fc1e75" stroke-width="0.5"/>
+        <line x1="80" y1="300" x2="720" y2="300" stroke="#fc1e75" stroke-width="0.5"/>
+        <line x1="80" y1="450" x2="720" y2="450" stroke="#d946ef" stroke-width="0.5"/>
+        <line x1="80" y1="600" x2="720" y2="600" stroke="#d946ef" stroke-width="0.5"/>
+        <line x1="80" y1="750" x2="720" y2="750" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="80" y1="900" x2="720" y2="900" stroke="#00d4ff" stroke-width="0.5"/>
+        <line x1="80" y1="1050" x2="650" y2="1050" stroke="#00d4ff" stroke-width="0.5"/>
 
-        <!-- Longitude lines -->
-        <line x1="200" y1="30" x2="200" y2="1100" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="300" y1="80" x2="300" y2="1050" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="400" y1="50" x2="400" y2="1080" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="500" y1="70" x2="500" y2="1020" stroke="#00d4ff" stroke-width="0.5"/>
-        <line x1="600" y1="100" x2="600" y2="850" stroke="#00d4ff" stroke-width="0.5"/>
+        <!-- Linhas de longitude -->
+        <line x1="200" y1="40" x2="200" y2="1080" stroke="#fc1e75" stroke-width="0.5"/>
+        <line x1="300" y1="70" x2="300" y2="1060" stroke="#fc1e75" stroke-width="0.5"/>
+        <line x1="400" y1="50" x2="400" y2="1070" stroke="#d946ef" stroke-width="0.5"/>
+        <line x1="500" y1="65" x2="500" y2="1000" stroke="#d946ef" stroke-width="0.5"/>
+        <line x1="600" y1="110" x2="600" y2="840" stroke="#00d4ff" stroke-width="0.5"/>
     </g>
 
-    <!-- Country label -->
-    <text x="400" y="550"
+    <!-- Label do país com gradiente -->
+    <text x="400" y="560"
           text-anchor="middle"
-          fill="#00d4ff"
-          font-size="64"
-          font-weight="700"
+          fill="url(#borderGradientEmidias)"
+          font-size="80"
+          font-weight="900"
           font-family="sans-serif"
-          opacity="0.2"
-          letter-spacing="8">
+          opacity="0.15"
+          letter-spacing="12"
+          style="text-transform: uppercase;">
         BRASIL
     </text>
+
+    <!-- Indicador de escala (decorativo) -->
+    <g id="scale-indicator" opacity="0.4">
+        <line x1="80" y1="1120" x2="180" y2="1120" stroke="#fc1e75" stroke-width="2"/>
+        <line x1="80" y1="1115" x2="80" y2="1125" stroke="#fc1e75" stroke-width="2"/>
+        <line x1="180" y1="1115" x2="180" y2="1125" stroke="#fc1e75" stroke-width="2"/>
+        <text x="130" y="1145" fill="#9ca3af" font-size="12" font-family="sans-serif" text-anchor="middle">500 km</text>
+    </g>
 </svg>

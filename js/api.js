@@ -8,12 +8,59 @@ const DashboardAPI = (function() {
 
     // Configuration
     const CONFIG = {
-        // TODO: Replace with your actual Cloudflare Worker URL
+        // Cloudflare Worker URL - configure com seu endpoint
         API_BASE_URL: 'https://dashboard-institucional.kaike74.workers.dev',
         TIMEOUT: 10000, // 10 seconds
         RETRY_ATTEMPTS: 3,
         RETRY_DELAY: 2000, // 2 seconds
         CACHE_DURATION: 120000, // 2 minutes
+        USE_FALLBACK_DATA: true, // Ativa dados de fallback se API falhar
+    };
+
+    // Fallback data (dados de exemplo para demonstração)
+    const FALLBACK_DATA = {
+        metricas: {
+            campanhasDoMes: 48,
+            campanhasAtivasHoje: 34,
+            emissorasAtivasHoje: 67,
+            insercoesHoje: 554,
+            cidadesAtivasHoje: 33
+        },
+        coordenadas: [
+            { cidade: "São Paulo", lat: -23.5505, lng: -46.6333 },
+            { cidade: "Rio de Janeiro", lat: -22.9068, lng: -43.1729 },
+            { cidade: "Brasília", lat: -15.7975, lng: -47.8919 },
+            { cidade: "Salvador", lat: -12.9714, lng: -38.5014 },
+            { cidade: "Fortaleza", lat: -3.7172, lng: -38.5433 },
+            { cidade: "Belo Horizonte", lat: -19.9167, lng: -43.9345 },
+            { cidade: "Manaus", lat: -3.1190, lng: -60.0217 },
+            { cidade: "Curitiba", lat: -25.4284, lng: -49.2733 },
+            { cidade: "Recife", lat: -8.0476, lng: -34.8770 },
+            { cidade: "Porto Alegre", lat: -30.0346, lng: -51.2177 },
+            { cidade: "Belém", lat: -1.4558, lng: -48.4902 },
+            { cidade: "Goiânia", lat: -16.6869, lng: -49.2648 },
+            { cidade: "Campinas", lat: -22.9099, lng: -47.0626 },
+            { cidade: "São Luís", lat: -2.5387, lng: -44.2825 },
+            { cidade: "Maceió", lat: -9.6498, lng: -35.7089 },
+            { cidade: "Natal", lat: -5.7945, lng: -35.211 },
+            { cidade: "Campo Grande", lat: -20.4697, lng: -54.6201 },
+            { cidade: "Teresina", lat: -5.0892, lng: -42.8019 },
+            { cidade: "João Pessoa", lat: -7.1195, lng: -34.8450 },
+            { cidade: "Florianópolis", lat: -27.5954, lng: -48.5480 },
+            { cidade: "Vitória", lat: -20.3155, lng: -40.3128 },
+            { cidade: "Aracaju", lat: -10.9472, lng: -37.0731 },
+            { cidade: "Cuiabá", lat: -15.6014, lng: -56.0979 },
+            { cidade: "Ribeirão Preto", lat: -21.1704, lng: -47.8103 },
+            { cidade: "Santos", lat: -23.9608, lng: -46.3333 },
+            { cidade: "Sorocaba", lat: -23.5015, lng: -47.4526 },
+            { cidade: "Uberlândia", lat: -18.9146, lng: -48.2754 },
+            { cidade: "Londrina", lat: -23.3045, lng: -51.1696 },
+            { cidade: "Joinville", lat: -26.3045, lng: -48.8487 },
+            { cidade: "Juiz de Fora", lat: -21.7642, lng: -43.3503 },
+            { cidade: "Niterói", lat: -22.8839, lng: -43.1039 },
+            { cidade: "Caxias do Sul", lat: -29.1634, lng: -51.1797 },
+            { cidade: "Blumenau", lat: -26.9194, lng: -49.0661 }
+        ]
     };
 
     // Cache storage
@@ -150,7 +197,7 @@ const DashboardAPI = (function() {
             cache.data = data;
             cache.timestamp = Date.now();
 
-            console.log('Data fetched successfully:', {
+            console.log('✅ Data fetched successfully:', {
                 metricas: data.metricas,
                 coordenadas_count: data.coordenadas.length,
             });
@@ -158,12 +205,20 @@ const DashboardAPI = (function() {
             return data;
 
         } catch (error) {
-            console.error('Failed to fetch dashboard data:', error);
+            console.error('❌ Failed to fetch dashboard data:', error);
 
             // Return cached data if available, even if expired
             if (cache.data) {
-                console.warn('Returning stale cached data due to error');
+                console.warn('⚠️ Returning stale cached data due to error');
                 return cache.data;
+            }
+
+            // Use fallback data if enabled
+            if (CONFIG.USE_FALLBACK_DATA) {
+                console.warn('⚠️ Using fallback data (API unavailable)');
+                cache.data = FALLBACK_DATA;
+                cache.timestamp = Date.now();
+                return FALLBACK_DATA;
             }
 
             throw error;
