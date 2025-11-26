@@ -1,0 +1,26 @@
+# Cloudflare Worker Configuration
+# Dashboard Institucional com Cache KV
+
+name = "dashboard-institucional"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespace Bindings
+# IMPORTANTE: Você precisa criar o namespace no Cloudflare Dashboard primeiro!
+[[kv_namespaces]]
+binding = "DASHBOARD_KV"
+id = "SEU_KV_NAMESPACE_ID_AQUI"  # ⚠️ SUBSTITUIR pelo ID real do KV namespace
+
+# Para preview/dev
+# [[kv_namespaces]]
+# binding = "DASHBOARD_KV"
+# preview_id = "SEU_KV_PREVIEW_ID_AQUI"
+
+# Workers AI (opcional, se usar no futuro)
+# [ai]
+# binding = "AI"
+
+# Variáveis de ambiente (opcional)
+# [vars]
+# API_KEY = "9620cf74-856d-40c2-a091-248e4f322caa"
+# GEONAMES_USERNAME = "kaike"

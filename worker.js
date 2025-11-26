@@ -1,21 +1,27 @@
 /**
  * Dashboard Institucional - Cloudflare Worker
  * Busca dados da API Audiency e coordenadas via Geonames
+ * ✨ COM CACHE KV INCREMENTAL ✨
  */
 
 export default {
     async fetch(request, env, ctx) {
-        console.log("=== DASHBOARD WORKER - VERSÃO COMPLETA ===");
+        console.log("=== DASHBOARD WORKER - VERSÃO KV CACHE ===");
 
         // Configurações
         const API_KEY = "9620cf74-856d-40c2-a091-248e4f322caa";
         const GEONAMES_USERNAME = "kaike";
 
+        // KV Cache Keys
+        const hoje = new Date();
+        const dataHoje = hoje.toISOString().split('T')[0];
+        const CACHE_KEY_INSERCOES = `insercoes-${dataHoje}`;
+        const CACHE_KEY_COORDENADAS = `coordenadas-${dataHoje}`;
+        const CACHE_KEY_METRICAS = `metricas-${dataHoje}`;
+
         try {
-            const hoje = new Date();
             const ano = hoje.getFullYear();
             const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const dataHoje = hoje.toISOString().split('T')[0];
 
             const inicioMesAtual = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
             const fimMesAtual = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
@@ -56,6 +62,49 @@ export default {
 
             console.log(`🎯 Campanhas válidas: ${campanhasValidas.length}`);
 
+            // ===== 2.5. VERIFICAR CACHE KV =====
+            let dadosCache = null;
+
+            if (env.DASHBOARD_KV) {
+                try {
+                    const cacheJSON = await env.DASHBOARD_KV.get(CACHE_KEY_INSERCOES);
+                    if (cacheJSON) {
+                        dadosCache = JSON.parse(cacheJSON);
+                        const idadeCache = Date.now() - dadosCache.timestamp;
+                        console.log(`💾 Cache encontrado! Idade: ${Math.round(idadeCache / 1000)}s`);
+
+                        // Se cache tem menos de 2 minutos, retornar direto
+                        if (idadeCache < 120000) { // 2 minutos
+                            console.log(`✅ Retornando dados do cache (frescos)`);
+
+                            return new Response(JSON.stringify({
+                                success: true,
+                                timestamp: new Date().toISOString(),
+                                fromCache: true,
+                                cacheAge: Math.round(idadeCache / 1000),
+                                metricas: dadosCache.metricas,
+                                coordenadas: dadosCache.coordenadas,
+                                insercoesRecentes: dadosCache.insercoesRecentes,
+                                debug: dadosCache.debug
+                            }, null, 2), {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Access-Control-Allow-Origin": "*",
+                                    "Cache-Control": "public, max-age=60",
+                                    "X-Cache-Status": "HIT"
+                                }
+                            });
+                        }
+                    } else {
+                        console.log(`📭 Nenhum cache encontrado para ${CACHE_KEY_INSERCOES}`);
+                    }
+                } catch (error) {
+                    console.log(`⚠️ Erro ao ler cache: ${error.message}`);
+                }
+            } else {
+                console.log(`⚠️ KV namespace não configurado (env.DASHBOARD_KV)`);
+            }
+
             // ===== 3. BUSCAR INSERÇÕES DE HOJE =====
             let insercoesHoje = [];
             let emissorasSet = new Set();
@@ -64,8 +113,14 @@ export default {
             // Processar primeiras 10 campanhas para evitar timeout
             const campanhasParaProcessar = campanhasValidas.slice(0, 10);
 
+            // EXPERIMENTO: Tentar buscar com hora atual incluída
+            const horaAtual = String(hoje.getHours()).padStart(2, '0');
+            const minutoAtual = String(hoje.getMinutes()).padStart(2, '0');
+            console.log(`⏰ Hora atual: ${horaAtual}:${minutoAtual}`);
+
             for (const campanha of campanhasParaProcessar) {
                 try {
+                    // Formato padrão: apenas data
                     const execUrl = `https://api.audiency.io/advertiser-rest/reports/common/advertiser-execution?page=1&limit=1000&countryId=1&campaignId=${campanha.id}&stationDate=${dataHoje}&stationDate=${dataHoje}`;
 
                     const execResponse = await fetch(execUrl, {
@@ -89,6 +144,12 @@ export default {
                             if (item.stationName) emissorasSet.add(item.stationName);
                             if (item.city) cidadesSet.add(item.city.split(' / ')[0]);
                         });
+
+                        // Log para debugging do delay
+                        if (items.length > 0) {
+                            const ultimaHora = items[items.length - 1]?.hour || 'N/A';
+                            console.log(`📡 Campanha ${campanha.id}: ${items.length} inserções, última hora: ${ultimaHora}`);
+                        }
                     }
 
                     await new Promise(resolve => setTimeout(resolve, 500));
@@ -174,11 +235,36 @@ export default {
 
             console.log(`✅ Resposta montada com sucesso`);
 
+            // ===== 9. SALVAR NO CACHE KV =====
+            if (env.DASHBOARD_KV) {
+                try {
+                    const dadosParaCache = {
+                        timestamp: Date.now(),
+                        metricas: resultado.metricas,
+                        coordenadas: resultado.coordenadas,
+                        insercoesRecentes: resultado.insercoesRecentes,
+                        debug: resultado.debug
+                    };
+
+                    // Salvar no KV com expiração de 24h (86400 segundos)
+                    await env.DASHBOARD_KV.put(
+                        CACHE_KEY_INSERCOES,
+                        JSON.stringify(dadosParaCache),
+                        { expirationTtl: 86400 }
+                    );
+
+                    console.log(`💾 Dados salvos no cache KV: ${CACHE_KEY_INSERCOES}`);
+                } catch (error) {
+                    console.log(`⚠️ Erro ao salvar no cache: ${error.message}`);
+                }
+            }
+
             return new Response(JSON.stringify(resultado, null, 2), {
                 headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
-                    "Cache-Control": "public, max-age=60"
+                    "Cache-Control": "public, max-age=60",
+                    "X-Cache-Status": "MISS"
                 }
             });
 
